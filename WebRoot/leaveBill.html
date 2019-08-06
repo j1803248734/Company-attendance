@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>leaveBill</title>
+
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/default/easyui.css"/>
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+	<script type="text/javascript">
+		formatterDate = function(date) {
+		var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+		var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"
+		+ (date.getMonth() + 1);
+		return date.getFullYear() + '-' + month + '-' + day;
+		};
+		
+		window.onload = function () { 
+		$('#nowTime').datebox('setValue', formatterDate(new Date()));
+		$('#startTime').datebox('setValue', formatterDate(new Date()));
+		$('#endTime').datebox('setValue', formatterDate(new Date()));
+		}
+	</script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" id="useBox">
+
+
+    <div data-options="region:'center',split:true">
+        <fieldset>
+            <legend>添加请假单</legend>
+            <form>
+            <div class="formDiv01 formDiv02" >
+	            <p>
+	            	<label>申请人:</label>
+	            	<input type="text" style="width:150px" class="easyui-validatebox" name="name" data-options="required:true,validType:['length[1,200]']">
+	            	<span class="formSpan">*</span>
+	            	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			     	<a href="#" class="easyui-linkbutton" 
+                    onclick="">&nbsp;检索&nbsp;</a>
+			     </p>
+            </div>
+            
+            <div class="formDiv01 formDiv02" >
+	            <p>
+	            	<label>代理人:</label>
+	            	<input type="text" style="width:150px" class="easyui-validatebox" name="name" data-options="required:true,validType:['length[1,200]']">
+	            	<span class="formSpan">*</span>
+	            	
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" >
+	            <p>
+	            	<label>请假类型:</label>
+	            	<select class="easyui-combobox" name="cause"  labelPosition="top" style="width:120px;height: 27px;">
+						<option value="">-所有-</option>
+						<option value="1">外出</option>
+						<option value="2">出差</option>
+						<option value="3">事假</option>
+						<option value="4">病假</option>
+						<option value="5">婚嫁</option>
+						<option value="6">丧假</option>
+						<option value="7">产假</option>
+					</select>
+					<span class="formSpan">*</span>
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" id="timeBox">
+	            <p>
+	            	<label>填表日期:</label>
+	            	<input type="text" id="nowTime" class="easyui-datebox" name="nowTime" style="width: 120px;height: 26px">
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" id="timeBox">
+	            <p>
+	            	<label>请假事由:</label>
+	            	
+	            	<textarea id="editor" class="newsArea"></textarea >
+	            	<span class="formSpan">*</span>
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" id="timeBox">
+	            <p>
+	            	<label>请假起始时间:</label>
+	            	
+	            	<input type="text" id="startTime" class="easyui-datebox" name="startTime" style="width: 120px;height: 26px">
+	            	&nbsp;&nbsp;
+	            	<select class="easyui-combobox" name="cause"  labelPosition="top" style="width:70px;height: 26px;">
+	            		<option value="0">上午</option>
+	            		<option value="1">下午</option>
+	            	</select>
+	            	<span class="formSpan">*</span>
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" id="timeBox">
+	            <p>
+	            	<label>请假截至时间:</label>
+	            	
+	            	<input type="text" id="endTime" class="easyui-datebox" name="endTime" style="width: 120px;height: 26px">
+	            	&nbsp;&nbsp;
+	            	<select class="easyui-combobox" name="cause"  labelPosition="top" style="width:70px;height: 26px;">
+	            		<option value="0">上午</option>
+	            		<option value="1">下午</option>
+	            	</select>
+	            	<span class="formSpan">*</span>
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" id="timeBox">
+	            <p>
+	            	<label>主管经理签字:</label>
+	            	
+	            	<textarea id="editor" class="newsArea"></textarea >
+	            	
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" id="timeBox">
+	            <p>
+	            	<label>行政部经理签字:</label>
+	            	
+	            	<textarea id="editor" class="newsArea"></textarea >
+	            	
+			     </p>
+            </div>
+            <div class="formDiv01 formDiv02" id="timeBox">
+	            <p>
+	            	<label>总裁审批:</label>
+	            	
+	            	<textarea id="editor" class="newsArea"></textarea >
+	            	
+			     </p>
+            </div>    
+            </form>
+        </fieldset>
+        <div class="forSubmint"> 
+	        <a href="#" class="easyui-linkbutton"  iconCls="icon-save" >保存</a>
+	        <a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a>
+	        <a href="leaveApplication.html" class="easyui-linkbutton"  iconCls="icon-remove" >返回</a> 
+        </div>
+    </div>
+</div>
+
+
+<script src="js/jquery-easyui/jquery.min.js"></script>
+<script src="js/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="js/news.js"></script>
+<script src="js/utf8-php/ueditor.config.js"></script>
+<script src="js/utf8-php/ueditor.all.min.js"></script>
+
+<script >
+    var ue = UE.getEditor('editor');
+    function isFocus(e){
+        alert(UE.getEditor('editor').isFocus());
+        UE.dom.domUtils.preventDefault(e)
+    }
+    function setblur(e){
+        UE.getEditor('editor').blur();
+        UE.dom.domUtils.preventDefault(e)
+    }
+    function insertHtml() {
+        var value = prompt('????html????', '');
+        UE.getEditor('editor').execCommand('insertHtml', value)
+    }
+    function createEditor() {
+        enableBtn();
+        UE.getEditor('editor');
+    }
+    function getAllHtml() {
+        alert(UE.getEditor('editor').getAllHtml())
+    }
+    function getContent() {
+        var arr = [];
+        arr.push("");
+        arr.push("");
+        arr.push(UE.getEditor('editor').getContent());
+        alert(arr.join("\n"));
+    }
+    function getPlainTxt() {
+        var arr = [];
+        arr.push("");
+        arr.push("");
+        arr.push(UE.getEditor('editor').getPlainTxt());
+        alert(arr.join('\n'))
+    }
+    function setContent(isAppendTo) {
+        var arr = [];
+        arr.push("");
+        UE.getEditor('editor').setContent('??????ueditor', isAppendTo);
+        alert(arr.join("\n"));
+    }
+    function setDisabled() {
+        UE.getEditor('editor').setDisabled('fullscreen');
+        disableBtn("enable");
+    }
+
+    function setEnabled() {
+        UE.getEditor('editor').setEnabled();
+        enableBtn();
+    }
+
+    function getText() {
+
+        var range = UE.getEditor('editor').selection.getRange();
+        range.select();
+        var txt = UE.getEditor('editor').selection.getText();
+        alert(txt)
+    }
+
+    function getContentTxt() {
+        var arr = [];
+        arr.push("");
+        arr.push("");
+        arr.push(UE.getEditor('editor').getContentTxt());
+        alert(arr.join("\n"));
+    }
+    function hasContent() {
+        var arr = [];
+        arr.push("");
+        arr.push("");
+        arr.push(UE.getEditor('editor').hasContents());
+        alert(arr.join("\n"));
+    }
+    function setFocus() {
+        UE.getEditor('editor').focus();
+    }
+    function deleteEditor() {
+        disableBtn();
+        UE.getEditor('editor').destroy();
+    }
+    function disableBtn(str) {
+        var div = document.getElementById('btns');
+        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+        for (var i = 0, btn; btn = btns[i++];) {
+            if (btn.id == str) {
+                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+            } else {
+                btn.setAttribute("disabled", "true");
+            }
+        }
+    }
+    function enableBtn() {
+        var div = document.getElementById('btns');
+        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+        for (var i = 0, btn; btn = btns[i++];) {
+            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+        }
+    }
+
+    function getLocalData () {
+        alert(UE.getEditor('editor').execCommand( "getlocaldata" ));
+    }
+
+    function clearLocalData () {
+        UE.getEditor('editor').execCommand( "clearlocaldata" );
+        alert("")
+    }
+</script>
+</body>
+</html>

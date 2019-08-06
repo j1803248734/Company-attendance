@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格列表</title>
+
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/default/easyui.css"/>
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-easyui/jquery.min.js"></script>
+	<script src="js/jquery-easyui/jquery.easyui.min.js"></script>
+	<script src="js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		$(
+			function()
+			{
+				initRole(),
+				initRoleTwo()
+			}
+		);
+		function initRole()
+		{
+			$("#table").datagrid({
+			        title:"数据列表",
+			        iconCls:"icon-left02",
+			        url:'http://localhost:8080/KQSYS/AdminController/findAll',
+			        fitColumns:true,
+			        striped:true,
+			        pagination:true,
+			        pageSize:10,
+			        width:'100%',
+			        rownumbers:true,
+			        pageList:[10,20],
+			        pageNumber:1,
+			        nowrap:true,
+			        height:'auto',
+			        sortName:'adminID',
+			        checkOnSelect:false,
+			        singleSelect:true,
+			        sortOrder:'asc',
+			        toolbar: '#tabelBut',
+			        columns:[[
+			                {
+			                        checkbox:true,
+			                        field:'no',
+			                        width:100,
+			                        align:'center'
+			                }
+			                ,
+			                {
+			                        field:'popedomID',
+			                        title:'权限编号',
+			                        width:100,
+			                        hidden:true,
+			                        align:'center'
+			                },
+			                {
+			                        field:'adminID',
+			                        title:'用户编号',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'adminAccount',
+			                        title:'用户名',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:'adminPwd',
+			                        title:'密码',
+			                        width:120,
+			                        align:'center'
+			                },
+			                {
+			                        field:'oneDName',
+			                        title:'一级部门',
+			                        width:120,
+			                        align:'center'
+			                },
+			                {
+			                        field:'twoName',
+			                        title:'二级部门',
+			                        width:120,
+			                        align:'center'
+			                },
+			                {
+			                        field:'adminRight',
+			                        title:'角色',
+			                        width:120,
+			                        align:'center',
+			                        formatter: function(val,row)
+			                        {
+				                        if(row.adminRight == "0")
+				                        {
+				                        	return "<span style='color: green'>考勤员</span>";
+				                        	
+				                        }else{
+				                        	return "<span style='color: red'>管理员</span>";
+				                        }
+			                        }
+			                },
+			                {
+			                        field:"opr",
+			                        title:'操作',
+			                        width:280,
+			                        align:'center',
+			                        formatter:function (val,row) {
+			                         		
+				                        if(row.adminRight == "0")
+				                        {
+				                      //   e = '<a  id="add" data-id="98" class=" operA"  onclick="edit(\'' + row.adminID + '\')">编辑</a> ';
+			                                d = '<a  id="add" data-id="98" class=" operA01"  onclick="delOne(\'' + row.popedomID + '\')">删除</a> ';
+			                                return d;
+				                        	
+				                        }else{
+				                        	
+				                        }
+			                              
+				                        }
+				
+				                }
+				        ]]
+				})
+			
+		}
+		function initRoleTwo()
+		{
+			$("#tableEdit").datagrid({
+			        title:"权限分配",
+			        iconCls:"icon-left02",
+			        url:'http://localhost:8080/KQSYS/AdminController/findAll',
+			        fitColumns:true,
+			        striped:true,
+			        pagination:true,
+			        pageSize:10,
+			        width:'100%',
+			        rownumbers:true,
+			        pageList:[10,20],
+			        pageNumber:1,
+			        nowrap:true,
+			        height:'auto',
+			        sortName:'popedomID',
+			        checkOnSelect:false,
+			        sortOrder:'asc',
+			       
+			        columns:[[
+			                {
+			                        field:'adminID',
+			                        title:'用户编号',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'adminAccount',
+			                        title:'用户名',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:'oneDName',
+			                        title:'一级部门',
+			                        width:120,
+			                        align:'center'
+			                },
+			                {
+			                        field:'twoName',
+			                        title:'二级部门',
+			                        width:120,
+			                        align:'center'
+			                },
+			                {
+			                        field:'adminRight',
+			                        title:'角色',
+			                        width:120,
+			                        align:'center',
+			                        formatter: function(val,row)
+			                        {
+				                        if(row.adminRight == "0")
+				                        {
+				                        	return "<span style='color: green'>考勤员</span>";
+				                        	
+				                        }else{
+				                        	return "<span style='color: red'>管理员</span>";
+				                        }
+			                        }
+			                },
+			                {
+			                        field:"opr",
+			                        title:'操作',
+			                        width:280,
+			                        align:'center',
+			                        formatter:function (val,row) {
+			                              if(row.adminRight == "0")
+				                        {
+				                        	//e = '<a  id="add" data-id="98" class=" operA"  onclick="edit(\'' + row.adminID + '\')">编辑</a> ';
+			                                d = '<a  id="add" data-id="98" class=" operA01"  onclick="delOne(\'' + row.popedomID + '\')">删除</a> ';
+			                                return d;
+				                        	
+				                        }else{
+				                        	
+				                        }
+				
+				                        }
+				
+				                }
+				        ]]
+				})
+			
+		}
+		
+		function editRole(  )
+		{
+			var popedomID=$("#table").datagrid('getSelected').popedomID; 
+			
+			var adminRight = $("#table").datagrid('getSelected').adminRight;
+		 	
+			if(adminRight=='0')
+				
+	           {
+					 $("#editBox").dialog({
+		                	 title:"信息内容",
+		                     width:700,
+		                     height:500,
+		                     closed: false,
+		                     modal:true,
+		                     shadow:true
+		                })
+		              	//$(" #departmentID").from('reset');
+		                //数据怎么带过来的
+		               
+		                $.ajax({
+		                       url:'http://localhost:8080/KQSYS/AdminController/findAllU',
+		                       type:'post',
+		                       dataType:'json',
+		                       success:function (data) {
+		                      
+		                               if(data){
+		                               
+		                                       
+		                                       $.each(data,function (index) {
+		                                              
+		                                               if( popedomID== data[index].popedomID ){
+		                                            	   		//点击一条记录，将这条记录给Form
+		                                                       $('#editForm').form('load',{
+		                                                       	  	popedomID:popedomID,
+		                                                    	   adminID :data[index].adminID,
+		                                                    	   adminAccount : data[index].adminAccount
+		                                                    	   
+		                                                    	   
+		
+		                                                       })
+		                                                      
+		                                               }
+		
+		                                       })
+		                               }
+		
+		                       },
+		                       error:function () {
+		                               $.messager.show({
+		                                       title:'提示',
+		                                       msg:'更新失败'
+		
+		                               });
+		
+		                       }
+		               });
+               	}else{
+					alert("管理员不能被分配权限");
+				}
+		}	
+		function edit( adminID )
+		{
+			 $("#updateBox").dialog({
+                	 title:"信息内容",
+                     width:600,
+                     height:400,
+                     closed: false,
+                     modal:true,
+                     shadow:true
+                })
+                
+                //数据怎么带过来的
+               $.ajax({
+                       url:'http://localhost:8080/KQSYS/AdminController/findAllU',
+                       type:'post',
+                       dataType:'json',
+                       success:function (data) {
+                      
+                               if(data){
+                                      
+                                       
+                                       $.each(data,function (index) {
+                                       
+                                               var ID=data[index].adminID;
+                                               if(adminID==ID){
+                                            	   		//点击一条记录，将这条记录给Form
+                                                       $('#updateForm').form('load',{
+                                                    	   adminID : adminID,
+                                                    	   adminAccount : data[index].adminAccount,
+                                                    	   adminPwd : data[index].adminPwd,
+                                                    	   departmentID : data[index].twoDID,
+                                                    	   
+                                                    	   adminRight : data[index].adminRight
+                                                    	   
+
+                                                       })
+                                                      
+                                               }
+
+                                       })
+                               }
+
+                       },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               })
+
+                       }
+               })
+		}
+		function delOne( popedomID )
+		{
+		
+			 $.messager.confirm('提示信息','是否删除所选择记录',
+			 	function (flag) {
+			 		if( flag == true)//点击确定  则进行删除
+			 		{
+			 			$.ajax(
+			 				{
+			 					type:'post',
+                                url:'http://localhost:8080/KQSYS/AdminController/deleteA',
+                                dataType:"json",
+                                data:{popedomID:popedomID} ,
+                                beforesend:function () {
+                                $("#table").datagrid('loading');
+								},
+								success:function(data)
+								{
+									$("#table").datagrid("loaded");
+                                    $("#table").datagrid("load");
+                                    if( data == null )
+                                    {
+                                    	$.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除失败!"
+	                                    	}
+	                                    );
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除成功!"
+	                                    	}
+	                                    );
+                                    }
+								}
+			 				}
+			 			);
+			 		}
+			 	}
+			 );
+		}
+		function delTwo( adminID )
+		{
+			 $.messager.confirm('提示信息','是否删除所选择记录',
+			 	function (flag) {
+			 		if( flag == true)//点击确定  则进行删除
+			 		{
+			 			$.ajax(
+			 				{
+			 					type:'post',
+                                url:'json/role.json',
+                                dataType:"json",
+                                beforesend:function () {
+                                $("#table1").datagrid('loading');
+								},
+								success:function(data)
+								{
+									$("#table1").datagrid("loaded");
+                                    $("#table1").datagrid("load");
+                                    if( data == null )
+                                    {
+                                    	$.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除失败"
+	                                    	}
+	                                    );
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除成功"
+	                                    	}
+	                                    );
+                                    }
+								}
+			 				}
+			 			);
+			 		}
+			 	}
+			 );
+		}
+		function rolebutton() {
+		departmentID = $("#editForm #departmentID").val();
+		popedomID = $("#editForm #popedomID").val();
+			$("#editForm").form('submit',{
+                        url:"http://localhost:8080/KQSYS/AdminController/updateA",
+                        onSubmit:function () {
+                                return $(this).form('validate')
+                        },
+                        success:function (data) {
+                        		 //data 这个数据没有值
+                                
+                               
+                                 $("#tableEdit").datagrid('loaded');
+                                 $("#tableEdit").datagrid('load');
+                               	
+                                 $("#table").datagrid('loaded');
+                                 $("#table").datagrid('load');
+                              
+                               if( data == "false" )
+                                    {
+                                    	
+                                    	
+                                    	alert(departmentName+"是相同字段,不能用此字段");
+                                    	
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"增加成功"
+	                                    	}
+	                                    );
+	                                    
+	                                   
+	                                   
+                                    }
+                        },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               });
+
+                       }
+                });
+		}
+		function find() {
+			var adminAccount = $("#adminAccount").val();
+			alert(adminAccount);
+			$("#table").datagrid("load",{
+					adminAccount:adminAccount
+				});	 
+		}
+</script>	
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" id="useBox">
+    <div data-options="region:'center',split:true">
+        <!--表格查询-->
+       <div class="tableFind" style="text-align: center;">
+            <p>
+            <label>用户名：</label>
+            <input type="text" id="adminAccount" name="adminAccount"/>
+            <a id="btn"  class="easyui-linkbutton tableFindBut" data-options="iconCls:'icon-search'" onclick="find()">查询</a>
+            </p>
+        </div>
+       
+        <!--表格列表-->
+        <div class="tableCon">
+            <table id="table" class="tableStyle"></table>
+            <div id="tabelBut">
+                <div>
+                  
+                    <a  class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="editRole()">分配权限</a>
+                  
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+	
+	<div id="editBox">
+   	 	<form id="editForm" method="post">
+            <div title="基本信息">
+             <input id="popedomID" name="popedomID" type="hidden" value="" />
+                <table class="TailTable">
+                	<tr>
+                        <td class="TailLabel" style="width: 35%">管理员编号：</td>
+                        <td>
+                        	<input type="text" class="easyui-validatebox TailInput" name="adminID"  id="adminID" data-options="min:0,precision:2" readonly="readonly">
+                        	<span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">用户名：</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="adminAccount"  id="adminAccount" data-options="min:0,precision:2" ">
+	                        <span class="formSpan">*</span>
+                        </td>
+                        
+
+                    </tr>
+                   
+                    
+                     <tr>
+                        <td class="TailLabel">所属部门：</td>
+                        <td>
+                        	<select id="cc" class="easyui-combotree" style="width:200px; height: 27px;"   id="departmentID"  name="departmentID"
+        					data-options="url:'http://localhost:8080/KQSYS/DepartmentController/queryAllDepartmentsForTree'"></select>  
+			        		<span class="formSpan">*</span>
+                        </td>
+                        
+                    </tr>
+                </table>
+                <div class="forSubmint">
+               	 	<a  class="easyui-linkbutton" onclick="rolebutton()" style="width: 100px">分配</a> 
+                </div>
+            </div>
+            <br/>
+            <div id="div1">
+        		<table id="tableEdit" name="tableEdit" class="tableStyle"></table>
+        	</div>
+           </form>
+        </div>
+	
+	
+       <div id="updateBox">
+   	 	<form id="updateForm" method="post">
+            <div title="基本信息">
+                <table class="TailTable">
+                	<tr>
+                        <td class="TailLabel">员工编号：</td>
+                        <td>
+                        	<input type="text" class="easyui-validatebox TailInput" name="adminID"  id="adminID" data-options="min:0,precision:2" readonly="readonly">
+                        	<span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">用户名：</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="adminAccount"  id="adminAccount" data-options="min:0,precision:2" ">
+	                        <span class="formSpan">*</span>
+                        </td>
+                        
+
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">密码：</td>
+                        <td>
+        					 <input type="text" class="easyui-validatebox TailInput" name="adminPwd"  id="adminPwd" data-options="min:0,precision:2" ">
+        					<span class="formSpan">*</span>
+        				</td>
+                        
+
+                    </tr>
+                    
+                     <tr>
+                        <td class="TailLabel">所属部门：</td>
+                        <td>
+                        	<select id="cc" class="easyui-combotree" style="width:200px;"   id="departmentID"  name="departmentID"
+        					data-options="url:'http://localhost:8080/KQSYS/DepartmentController/queryAllDepartmentsForTree',required:true"></select>  
+			        		<span class="formSpan">*</span>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">角色：</td>
+                        <td>
+                        	<select class="easyui-combobox" id="adminRight" name="adminRight" style="height: 27px;">
+				        		<option value="">请选择</option>	
+								<option value="0">考勤员</option>
+								<option value="1">管理员</option>
+			        		</select>
+                        	<span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    
+                    
+                </table>
+                <div class="forSubmint"> <a onclick="sumU()" class="easyui-linkbutton"  iconCls="icon-save" >保存</a>
+                <a class="easyui-linkbutton"  iconCls="icon-redo" onclick="Reset()">重置</a> </div>
+            </div>
+           </form>
+        </div>
+<!--//新增弹出框-->
+</body>
+</html>

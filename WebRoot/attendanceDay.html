@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/default/easyui.css"/>
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-easyui/jquery.min.js"></script>
+	<script src="js/jquery-easyui/jquery.easyui.min.js"></script>
+	<script src="js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		formatterDate = function(date) {
+		var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+		var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"
+		+ (date.getMonth() + 1);
+		return date.getFullYear() + '-' + month + '-' + day;
+		};
+		
+		window.onload = function () { 
+		$('#fillInTime').datebox('setValue', formatterDate(new Date()));
+		
+		}
+		var attTodayDate = null;
+		
+		function find() {
+		
+		var attendanceTime= $("#attendanceTime").val();
+			$("#fromFind").form('submit',{
+				type:'POST',
+				url:'http://localhost:8080/KQSYS/AttendanceDayController/findByDay',
+				data:{attendanceTime:attendanceTime},
+				onsubmit:function()
+				{
+					//做表单字段验证 当所有字段有效的时候为true  
+					return $(this).form('validate');
+				},
+				success:function(res)
+				{
+					attTodayDate = res;
+					
+					deptLoad();
+				}
+				});
+			
+			}
+		function deptLoad()
+		{
+		/*	$.ajax(
+				type:'POST',
+				url:'http://localhost:8080/KQSYS/DepartmentController/queryAllDepartmentsForTree',
+				dataType: 'json',
+				success:function(data)
+				{
+					alert("11");
+				
+				}
+				
+			);	*/
+			$.ajax(
+				{
+					type:"POST",
+					url: "http://localhost:8080/KQSYS/DepartmentController/queryAllDepartmentsForTree",
+					dataType: "json" ,
+					success : function(data)
+					{
+					 var html="";
+						$.each(data , function(index){
+						 	html += "<fieldset><legend style='font-size:17px;font-weight:bold;'>"+data[index].text+"</legend>";
+					 		$.each(data[index].children,function(i){
+					 			html += "<fieldset style = 'width:85%; margin:20px auto;'>";
+					 			html += "<legend style='font-size:17px;font-weight:bold;'>"+data[index].children[i].text+"</legend>";
+					 			html += "<div class='formDiv01 formDiv02'>";
+					 			var tag = 0;
+					 			
+					 			
+					 			eval( "var jsonData = " +attTodayDate );
+					 			$.each(jsonData,function(j){
+					 				if(jsonData[j].twoName == data[index].children[i].text)
+						 			{
+						 				html += "<label>" + jsonData[j].employeeName +"("+jsonData[j].typeName+")"+"&nbsp;&nbsp;&nbsp;</label>";	
+						 				tag ++;
+						 			}
+					 			});
+					 			if( tag == 0 )
+					 			{
+					 				html += "<p style='width:200px;margin:10px auto;text-algin:center'>暂无当日数据</p>";
+					 				
+					 			} 
+					 			html += "</div></fieldset>";
+					 		});
+					 		if( data[index].children.length == 0 )
+					 		{
+					 			html += "<p style='width:200px;margin:10px auto;text-align:center'>暂无数据</p>";
+					 		}
+					 		html += "</fieldset>";
+						});	
+						$("#attenInfo").html(html);
+					},
+					error:function()
+					{
+						$.messager.alert('提示','加载部门信息失败');
+					}
+				}
+			);
+		}	
+		
+</script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" id="useBox">
+    <div data-options="region:'center',split:true">
+        <!--表格查询-->
+     <form id="fromFind">
+       <div class="tableFind" style="text-align: center;">
+            <p>
+            <label style="width:120px;">生成公告日期时间：</label>
+            <input class="easyui-datebox" type="text" id="attendanceDate" name="attendanceDate" value="new Date()" style="width:150px; height: 27px;"/>
+            
+            <select class="easyui-combobox" name="attendanceTime" id="attendanceTime"  style="width:100px; height: 26px;">
+            <option value="">请选择</option>
+				<option value="上午">上午</option>
+				<option value="下午">下午</option>
+			</select>
+			<a  href="javascript:" class="easyui-linkbutton tableFindBut" data-options="iconCls:'icon-search'" onclick="find()">生成公告</a>
+			
+            </p>
+        </div>
+     	<div id="attenInfo">
+     	</div>
+        
+   	</form>
+   </div>
+</div>
+</body>
+</html>

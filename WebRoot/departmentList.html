@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一级部门添加</title>
+
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/default/easyui.css"/>
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-easyui/jquery.min.js"></script>
+	<script src="js/jquery-easyui/jquery.easyui.min.js"></script>
+	<script src="js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		$(
+			function()
+			{
+				initOneDepartmentList();
+				
+			}
+		);
+		//管理子部门
+		function manageChild( departmentID )
+		{	
+			
+		//1.设置管理子界面的样式
+			$("#manageChild").dialog({
+        	title:"二级部门维护",
+        	width:950,
+        	height:600,
+        	closed: false,
+        	modal:true,
+        	shadow:true
+		});
+			$("#addTwoForm #parentID").combobox('setValue',departmentID);
+			initTwoDepartmentList( departmentID  );
+		}
+		function initOneDepartmentList()
+			{
+				$("#tableOne").datagrid({
+			        title:"数据列表",
+			        iconCls:"icon-left02",
+			        url:'http://localhost:8080/KQSYS/DepartmentController/queryAllOneDepartments',
+			        fitColumns:true,
+			        striped:true,
+			        pagination:true,
+			        pageSize:5,
+			        width:'100%',
+			        rownumbers:true,
+			        pageList:[5,10],
+			        pageNumber:1,
+			        nowrap:true,
+			        height:'auto',
+			        sortName:'departmentID',
+			        checkOnSelect:false,
+			        sortOrder:'asc',
+			        columns:[[
+			                {
+			                        checkbox:true,
+			                        field:'no',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'departmentID',
+			                        title:'一级部门编号',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'departmentName',
+			                        title:'一级部门名称',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:'startTimeAM',
+			                        title:'上午上班时间',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:'endTimeAM',
+			                        title:'上午下班时间',
+			                        width:180,
+			                        align:'center'
+			
+			
+			
+			                }, {
+			                        field:'startTimePM',
+			                        title:'下午上班时间',
+			                        width:180,
+			                        align:'center'
+			
+			
+			
+			                },
+			                {
+			                        field:'endTimePM',
+			                        title:'下午下班时间',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:"opr",
+			                        title:'操作',
+			                        width:280,
+			                        align:'center',
+			                        formatter:function (val,row) {
+			                         		a = '<a  id="add" data-id="98" class=" operA"  onclick="manageChild(\'' + row.departmentID + '\',\'' + row.parentID + '\')">管理子部门</a> ';
+			                                e = '<a  id="add" data-id="98" class=" operA"  onclick="editOne(\'' + row.departmentID + '\')">编辑</a> ';
+			                                d = '<a  id="add" data-id="98" class=" operA01"  onclick="delOne(\'' + row.departmentID + '\',\'' + row.departmentName + '\')">删除</a> ';
+			                                return a+e+d;
+				
+				                        }
+				
+				                }
+				        ]]
+				})
+			}
+			function initTwoDepartmentList( departmentID )
+			{
+				$("#tableTwo").datagrid({
+			        title:"数据列表",
+			        iconCls:"icon-left02",
+			        url:'http://localhost:8080/KQSYS/DepartmentController/queryTwoDepartments?departmentID='+departmentID,
+			        fitColumns:true,
+			        striped:true,
+			        pagination:true,
+			        pageSize:5,
+			        width:'100%',
+			        rownumbers:true,
+			        pageList:[5,10],
+			        pageNumber:1,
+			        nowrap:true,
+			        height:'auto',
+			        sortName:'departmentID',
+			        checkOnSelect:false,
+			        sortOrder:'asc',
+			        columns:[[
+			                {
+			                        checkbox:true,
+			                        field:'no',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'departmentID',
+			                        title:'二级部门编号',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'departmentName',
+			                        title:'二级部门名称',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'startTimeAM',
+			                        title:'上午上班时间',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'endTimeAM',
+			                        title:'上午下班时间',
+			                        width:100,
+			                        align:'center'
+			
+			
+			
+			                }, {
+			                        field:'startTimePM',
+			                        title:'下午上班时间',
+			                        width:100,
+			                        align:'center'
+			
+			
+			
+			                },
+			                {
+			                        field:'endTimePM',
+			                        title:'下午下班时间',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:"opr",
+			                        title:'操作',
+			                        width:200,
+			                        align:'center',
+			                        formatter:function (val,row) {
+			                         		
+			                                e = '<a  id="add" data-id="98" class=" operA"  onclick="editTwo(\'' + row.departmentID + '\')">编辑</a> ';
+			                                d = '<a  id="add" data-id="98" class=" operA01"  onclick="delTwo(\'' + row.departmentID + '\')">删除</a> ';
+			                                return e+d;
+				
+				                        }
+				
+				                }
+				        ]]
+				})
+			}
+		function editOne(departmentID)
+			{
+			$("#editOneBox").dialog({
+        	title:"一级部门维护",
+        	width:750,
+        	height:350,
+        	closed: false,
+        	modal:true,
+        	shadow:true
+        	});
+        	  $.ajax({
+                       url:'http://localhost:8080/KQSYS/DepartmentController/queryAllOneDepartment',
+                       type:'POST',
+                       dataType:'json',
+                       success:function (data) {
+                               
+                                      
+                                       $.each(data,function (index) {
+                                               ID=data[index].departmentID;
+                                               if(departmentID==ID){
+                                            	   		//点击一条记录，将这条记录给Form
+                                                       $('#editOneForm').form('load',{
+                                                               departmentID: departmentID,
+                                                               departmentName :data[index].departmentName,
+                                                               startTimeAM :data[index].startTimeAM,
+                                                               endTimeAM :data[index].endTimeAM,
+                                                               startTimePM :data[index].startTimePM,
+                                                               endTimePM :data[index].endTimePM,
+
+                                                       })
+                                                      
+                                               }
+
+                                       })
+                               
+
+                       },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               })
+
+                       }
+               })
+			}
+			function editTwo( departmentID )
+			{
+			
+				$("#editTwoBox").dialog({
+	        	title:"二级部门维护",
+	        	width:750,
+	        	height:370,
+	        	closed: false,
+	        	modal:true,
+	        	shadow:true
+	        	});
+        	  $.ajax({
+                       url:'http://localhost:8080/KQSYS/DepartmentController/queryTwoDepartment',
+                       type:'POST',
+                       dataType:'json',
+                       success:function ( data ) {
+                               	  $.each(data,function (index) {
+                               	  	
+                                               ID=data[index].departmentID;
+                                               if(departmentID==ID){
+                                            	   		//点击一条记录，将这条记录给Form
+                                                       $('#editTwoForm').form('load',{
+                                                               departmentID: departmentID,
+                                                               departmentName :data[index].departmentName,
+                                                               startTimeAM :data[index].startTimeAM,
+                                                               endTimeAM :data[index].endTimeAM,
+                                                               startTimePM :data[index].startTimePM,
+                                                               endTimePM :data[index].endTimePM,
+                                                               parentID:data[index].parentID
+				
+                                                       })
+                                                      
+                                               }
+
+                                       })
+                                     
+
+                       },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               })
+
+                       }
+               })
+			}
+			
+		function delOne( departmentID ,departmentName)
+		{
+			 $.messager.confirm('提示信息','是否删除所选择记录',
+			 	function (flag) {
+			 		if( flag == true)//点击确定  则进行删除
+			 		{
+			 			$.ajax(
+			 				{
+			 					type:'post',
+                                url:'http://localhost:8080/KQSYS/DepartmentController/deleteDept',
+                                dataType:"json",
+                                data:{departmentID:departmentID},
+                                beforesend:function () {
+                                $("#tableOne").datagrid('loading');
+								},
+								success:function(data)
+								{
+									
+									$("#tableOne").datagrid("loaded");
+                                    $("#tableOne").datagrid("load");
+                                   if( data == false )
+                                    {	
+                                    	alert("无法删除 "+ departmentName+"不是空部门！！！");
+                                    	
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除成功"
+	                                    	}
+	                                    );
+                                    }
+								}
+			 				}
+			 			);
+			 		}
+			 	}
+			 );
+		}
+		function delTwo( departmentID )
+		{
+			 $.messager.confirm('提示信息','是否删除所选择记录',
+			 	function (flag) {
+			 		if( flag == true)//点击确定  则进行删除
+			 		{
+			 			$.ajax(
+			 				{
+			 					type:'post',
+                                url:'http://localhost:8080/KQSYS/DepartmentController/deleteTwoDept',
+                                dataType:"json",
+                                data:{departmentID:departmentID},
+                                beforesend:function () {
+                                $("#tableTwo").datagrid('loading');
+								},
+								success:function(data)
+								{
+									
+									$("#tableTwo").datagrid("loaded");
+                                    $("#tableTwo").datagrid("load");
+                                   if( data == false )
+                                    {
+                                    	alert("这个部门在其他地方有可能用到哦  不能删除");
+                                    	
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除成功"
+	                                    	}
+	                                    );
+                                    }
+								}
+			 				}
+			 			);
+			 		}
+			 	}
+			 );
+		}
+		function sumA() {
+			$("#addForm").form('submit',{
+                        url:"http://localhost:8080/KQSYS/DepartmentController/addDept",
+                        onSubmit:function () {
+                                return $(this).form('validate')
+                        },
+                        success:function (data) {
+                        		 //data 这个数据没有值
+                                
+                               
+                                 $("#tableOne").datagrid('loaded');
+                                 $("#tableOne").datagrid('load');
+                                var departmentName = $("#addForm #departmentName").val();
+                              
+                               if( data == "false" )
+                                    {
+                                    	
+                                    	
+                                    	alert(departmentName+"是相同字段,不能用此字段");
+                                    	
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"增加成功"
+	                                    	}
+	                                    );
+	                                    
+	                                    $("#addForm").form("reset");	
+	                                   
+                                    }
+                        },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               });
+
+                       }
+                });
+		}
+		function sumU( departmentID ) {
+			$("#editOneForm").form('submit',{
+                        url:"http://localhost:8080/KQSYS/DepartmentController/updateDept",
+                        onSubmit:function () {
+                                return $(this).form('validate')
+                        },
+                        success:function (data) {
+                        		 //data 这个数据没有值
+                                
+                                alert
+                                 $("#tableOne").datagrid('loaded');
+                                 $("#tableOne").datagrid('load');
+                                
+                                $("#editOneBox").dialog({
+                                        closed: true
+
+                                })
+             					 var departmentName = $("#editOneForm #departmentName").val();
+             					 alert(departmentName);
+                               if( data == "false" )
+                                    {
+                                    	alert(departmentName+" 是相同字段呢  不可以修改");
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"修改成功"
+	                                    	}
+	                                    );
+                                    }
+                        },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               });
+
+                       }
+                });
+		}
+		function sumAT() {
+			$("#addTwoForm").form('submit',{
+                        url:"http://localhost:8080/KQSYS/DepartmentController/addTwoDept",
+                        onSubmit:function () {
+                                return $(this).form('validate')
+                        },
+                        success:function (data) {
+                        		 //data 这个数据没有值
+                                
+                               
+                                 $("#tableTwo").datagrid('loaded');
+                                 $("#tableTwo").datagrid('load');
+                                
+                                 var departmentName = $("#addTwoForm #departmentName").val();
+             
+                               if( data == "false" )
+                                    {
+                                    	alert(departmentName+" 是相同字段，不能用哦");
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"增加成功"
+	                                    	}
+	                                    );
+	                                    
+                                    }
+                                    
+	                                     $("#addTwoForm #departmentName").val('');
+	                                    $("#addTwoForm #startTimeAM").val('');
+	                                    $("#addTwoForm #endTimeAM").val('');
+	                                    $("#addTwoForm #startTimePM").val('');
+	                                    $("#addTwoForm #endTimePM").val('');
+	                                   
+                        },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               });
+
+                       }
+                });
+		}
+		function sumUT( departmentID ) {
+			$("#editTwoForm").form('submit',{
+                        url:"http://localhost:8080/KQSYS/DepartmentController/updateTwoDept",
+                        onSubmit:function () {
+                                return $(this).form('validate')
+                        },
+                        success:function (data) {
+                        		 //data 这个数据没有值
+                                
+                                
+                                 $("#tableTwo").datagrid('loaded');
+                                 $("#tableTwo").datagrid('load');
+                                
+                                $("#editTwoBox").dialog({
+                                        closed: true
+								 
+                                });
+             				var departmentName = $("#editTwoBox #departmentName").val();
+                               if( data == "false" )
+                                    {
+                                    	alert(departmentName+" 是相同字段，不能用哦");
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"修改成功"
+	                                    	}
+	                                    );
+                                    }
+                        },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               });
+
+                       }
+                });
+		}
+	</script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" id="useBox">
+    <div data-options="region:'center',split:true">
+        <!--表格查询-->
+        <form id="addForm" method="post">
+        <div class="tableFind" style="text-align: center;">
+        	<p> 
+        		<label style="width:100px; " >一级部门名称:</label> 
+        		<input type="text" id="departmentName" 
+        		class="easyui-validatebox" name="departmentName"  data-options="validType:'Length[0,5]'">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >上午上班时间:</label> 
+        		<input type="text" id="startTimeAM" 
+        		class="easyui-validatebox" name="startTimeAM"  data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >上午下班时间:</label> 
+        		<input type="text" id="endTimeAM" 
+        		class="easyui-validatebox" name="endTimeAM" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >下午上班时间:</label> 
+        		<input type="text" id="startTimePM" 
+        		class="easyui-validatebox" name="startTimePM" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >下午下班时间:</label> 
+        		<input type="text" id="endTimePM" 
+        		class="easyui-validatebox" name="endTimePM" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p>
+        		<a  class="easyui-linkbutton" 
+                    onclick="sumA()">添加一级部门</a>
+        	</p>
+            
+       </div>
+       </form>
+    
+        <!--表格列表-->
+        <div class="tableCon">
+            <table id="tableOne" class="tableStyle"></table>
+            
+        </div>
+    </div>
+</div>
+<!-- 管理子部门 -->
+<div id="manageChild"> 
+	<div data-options="region:'center',split:true">
+        <!--表格查询-->
+        <form id="addTwoForm" method="post">
+        <div class="tableFind" style="text-align: center;">
+    		<label>一级部门：</label>
+    		<input class="easyui-combobox" name="parentID"  id="parentID"  style="width:120px; height: 27px;"   readonly="readonly"
+    			data-options="valueField:'departmentID',textField:'departmentName',url:'http://localhost:8080/KQSYS/DepartmentController/queryAllOneDepartment'"  />  
+    
+        	<p> 
+        		<label style="width:100px; " >二级部门名称:</label> 
+        		<input type="text" id="departmentName" 
+        		class="easyui-validatebox" name="departmentName" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >上午上班时间:</label> 
+        		<input type="text" id="startTimeAM" 
+        		class="easyui-validatebox" name="startTimeAM" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >上午下班时间:</label> 
+        		<input type="text" id="endTimeAM" 
+        		class="easyui-validatebox" name="endTimeAM" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >下午上班时间:</label> 
+        		<input type="text" id="startTimePM" 
+        		class="easyui-validatebox" name="startTimePM" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p> 
+        		<label style="width:100px; " >下午下班时间:</label> 
+        		<input type="text" id="endTimePM" 
+        		class="easyui-validatebox" name="endTimePM" data-options="">
+        		<span class="formSpan">*</span>
+        	</p>
+        	<p>
+        		<a href="#" class="easyui-linkbutton" 
+                    onclick="sumAT()">添加二级部门</a>
+        	</p>
+            
+       </div>
+       </form>
+    
+        <!-- 二级表格列表-->
+        <div class="tableCon">
+            <table id="tableTwo" class="tableStyle"></table>
+            
+        </div>
+    </div>
+</div>
+<div id="editOneBox">
+   	 	<form id="editOneForm" method="post">
+            <div title="基本信息">
+                <table class="TailTable">
+                    <tr>
+                        <td class="TailLabel">一级部门编号:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="departmentID" id="departmentID" data-options="required:true">
+	                        <span class="formSpan">*</span>
+                        </td>
+                        
+
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">一级部门名称:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="departmentName" id="departmentName" data-options="required:true">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">上午上班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="startTimeAM" id="startTimeAM" data-options="required:true">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">上午下班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="endTimeAM" id="endTimeAM" data-options="required:true">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">下午上班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="startTimePM" id="startTimePM" data-options="required:true">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">下午下班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="endTimePM" id="endTimePM" data-options="required:true">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="forSubmint"> <a onclick="sumU()" class="easyui-linkbutton"  iconCls="icon-save" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+            </div>
+           </form>
+        </div>
+<!-- 编辑一级部门 -->
+		<div id="editTwoBox">
+   	 	<form id="editTwoForm" method="post">
+            <div title="基本信息">
+                <table class="TailTable">
+                	<tr>
+                        <td class="TailLabel">一级部门:</td>
+                        <td>
+	                       <input class="easyui-combobox" name="parentID" id="parentID"  style="width:120px; height: 27px;"
+    			data-options="valueField:'departmentID',textField:'departmentName',url:'http://localhost:8080/KQSYS/DepartmentController/queryAllOneDepartment'"  />  
+    
+                        </td>
+                        
+
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">二级部门编号:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="departmentID" id="departmentID" data-options="">
+	                        <span class="formSpan">*</span>
+                        </td>
+                        
+
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">二级部门名称:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="departmentName" id="departmentName" data-options="">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">上午上班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="startTimeAM" id="startTimeAM" data-options="">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">上午下班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="endTimeAM" id="endTimeAM" data-options="">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">下午上班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="startTimePM" id="startTimePM" data-options="">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">下午下班时间:</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="endTimePM" id="endTimePM" data-options="">
+	                        <span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="forSubmint"> <a  onclick="sumUT()" class="easyui-linkbutton"  iconCls="icon-save" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+            </div>
+           </form>
+        </div>
+
+</body>
+</html>

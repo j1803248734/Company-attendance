@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>attendancedept.html</title>
+
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/default/easyui.css"/>
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-easyui/jquery.min.js"></script>
+	<script src="js/jquery-easyui/jquery.easyui.min.js"></script>
+	<script src="js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		$(
+			function()
+			{
+				initattendancedept(),
+				departmentList()
+			}
+		);
+		
+		function departmentList()
+		{
+			$("#departmentID").combotree({
+	    url:'http://localhost:8080/KQSYS/DepartmentController/queryAllDepartmentsForTree',
+	    height:26,
+	    width:150,
+	    onBeforeSelect: function (node) {
+	        // 只能选中叶子节点
+	        if (!$(this).tree('isLeaf', node.target)) {
+	            return false;
+	        }
+	    },
+	    onSelect:function () {
+	        var t=$("#departmentID").combotree('tree');
+	        var n=t.tree('getSelected');
+	        var id=n.id;
+	        var text=n.text;
+	        $("#departmentID").combotree('setValue',{
+	        	id:id,
+	        	text:text
+	        });
+	    }
+	})
+		}
+		function initattendancedept()
+			{
+				$("#table").datagrid({
+			    title:"数据列表",
+			    iconCls:"icon-left02",
+			    url:'http://localhost:8080/KQSYS/AttendanceSumController/QueryAllAttendance',
+			    fitColumns:true,
+			    striped:true,
+			    pagination : false,
+			    pageSize:10,
+			    width:'100%',
+			    rownumbers : true,
+			    pageList:[10,20],
+			    pageNumber:1,
+			    nowrap:true,
+			    height:'auto',
+			    sortName:'cardNumber',
+			    checkOnSelect:false,
+			    toolbar: '#tabelBut',
+			    sortOrder:'asc',
+			    columns:[[
+			            
+			            {
+			                    field:'cardNumber',
+			                        title:'员工卡号',
+			                        width:100,
+			                        align:'center'
+			                },
+			                {
+			                        field:'employeeName',
+			                        title:'员工名称',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:'oneDName',
+			                        title:'一级部门名称',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:'twoName',
+			                        title:'二级部门名称',
+			                        width:180,
+			                        align:'center'
+			                },
+			                {
+			                        field:'attendanceDate',
+			                        title:'出勤日期',
+			                        width:180,
+			                        align:'center',
+			                        formatter : function(val, row) {
+										
+											var d1 = new Date();
+											d1.setTime(row.attendanceDate);
+											d1 =  d1.getFullYear() + "-" 
+												+ (d1.getMonth() + 1) + "-" + d1.getDate();
+										
+											
+											return d1;  
+										}
+			                },
+			                {
+			                        field:'mType',
+			                        title:'上午出勤状态',
+			                        width:180,
+			                        align:'center',
+									
+			
+			
+			                }, {
+			                        field:'aType',
+			                        title:'下午出勤状态',
+			                        width:180,
+			                        align:'center',
+									
+			            }
+			        ]]
+			})
+			}
+			
+			
+			function find() {
+			
+				if($("#radio1").prop("checked")){
+	    	if( $("#sel1").val() == "请选择年" || $("#sel2").val() == "请选择月" || $("#sel3").val() == "请选择日" ){
+	    		$.messager.alert('提示','请选择年月日！');
+	    		return false;
+    			}
+		    }else{
+		    	if( $("#startTime").datebox("getValue") == "" || $("#endTime").datebox("getValue") == "" ){
+		    		$.messager.alert('提示','请选择时间区间！');
+		    		return false;
+		    	}
+		    }
+		   
+				var attendanceType = '';
+					$('input:checkbox[name=state]:checked').each(function(k){
+					    if(k == 0){
+					        attendanceType = $(this).val();
+					    }else{
+					        attendanceType += ','+$(this).val();
+					    }
+					});
+
+					var sum = $("#sel1").val()+"-"+$("#sel2").val()+"-"+$("#sel3").val();
+					//attendanceDate = new Date(Date.parse(sum));
+				//alert(attendanceDate);
+				$("#table").datagrid("load",{
+					radiotf:$("#radio1").prop("checked"),
+					attendanceDate :sum,
+					startTime:$("#startTime").datebox("getValue"),
+					endTime:$("#endTime").datebox("getValue"),
+					attendanceType : attendanceType ,
+					employeeName : $("#employeeName").val() ,
+					departmentID : $("#departmentID").val() , 
+				});	 	
+				  
+				  
+				  
+				
+			}
+</script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" id="useBox">
+    <div data-options="region:'center',split:true">
+        <!--表格查询-->
+       <div class="tableFind" style="margin-left: 50px ;">
+       		<form id="queryForm" method="post">
+            <p>
+            	<input type="radio" id="radio1" name="radio" value="0">按年月查询:>>>>
+				<select name="sel1" id="sel1" style="width:70px;height: 27px; font-size: 15px" >
+					<option value="year"></option>
+				</select>
+				&nbsp;&nbsp;年&nbsp;&nbsp;
+				<select name="sel2" id="sel2" style="width:70px;height: 27px; font-size: 15px"">
+				<option value="month"></option>
+				</select>
+				&nbsp;&nbsp;月&nbsp;&nbsp;
+				<select name="sel3" id="sel3" style="width:70px;height: 27px; font-size: 15px"">
+				<option value="day"></option>
+				</select>
+				&nbsp;&nbsp;日
+				<span id="result"></span>
+			</p>
+			<p >
+            	<input type="radio" id="radio2" name="radio" value="1">按时间段查询:>>
+				开始日期:&nbsp;<input type="text" class="easyui-datebox" id="startTime" name="startTime" style="width:120px;">&nbsp;&nbsp;
+				&nbsp;截止日期:&nbsp;
+				<input type="text" id="endTime" class="easyui-datebox" name="endTime" style="width:120px;">
+			</p>
+			 >>出勤状态：&nbsp;&nbsp;
+				
+					<input type="checkbox" id="state1" name="state" class="state" value="1">出勤&nbsp;&nbsp;
+					<input type="checkbox" id="state2" name="state" class="state" value="2">病假&nbsp;&nbsp;
+					<input type="checkbox" id="state3" name="state" class="state" value="3">产假&nbsp;&nbsp;
+					<input type="checkbox" id="state4" name="state" class="state" value="4">事假&nbsp;&nbsp;
+					<input type="checkbox" id="state5" name="state" class="state" value="5">公休&nbsp;&nbsp;
+					<input type="checkbox" id="state6" name="state" class="state" value="6">迟到&nbsp;&nbsp;
+					<input type="checkbox" id="state7" name="state" class="state" value="7">旷工&nbsp;&nbsp;
+					<input type="checkbox" id="state8" name="state" class="state" value="8">外出&nbsp;&nbsp;
+					<input type="checkbox" id="state9" name="state" class="state" value="9">出差&nbsp;&nbsp;
+					<input type="checkbox" id="state10" name="state" class="state" value="10">加班&nbsp;&nbsp;
+					<input type="checkbox" id="state11" name="state" class="state" value="11">倒休&nbsp;&nbsp;
+					<input type="checkbox" id="state12" name="state" class="state" value="12">婚假&nbsp;&nbsp;
+					<input type="checkbox" id="state13" name="state" class="state" value="13">丧假&nbsp;&nbsp;
+				
+			
+			<p>
+            	<label style="width: 40px;">部门：</label>
+
+            	<input type="text" id="departmentID" name="departmentID" />
+
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<label style="width: 60px;">员工姓名：</label>
+
+				<input type="text" id="employeeName" name="employeeName" style="width: 150px;" />
+
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="#" class="easyui-linkbutton" 	
+                    onclick="find()">&nbsp;检索&nbsp;</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="#" class="easyui-linkbutton" 
+                    onclick="">&nbsp;导出Excel&nbsp;</a>
+			</p>
+			</form>
+        </div>
+       
+        <!--表格列表-->
+        <div class="tableCon">
+            <table id="table" class="tableStyle"></table>
+            
+        </div>
+        
+    </div>
+</div>
+<script type="text/javascript">
+	function creatDate(){
+			//生成1900年-2100年
+			for(var i = 1900; i<=2100;i++){
+				var option = document.createElement('option');
+				option.setAttribute('value',i);
+				option.innerHTML = i;
+				sel1.appendChild(option);
+			}
+			//生成1月-12月
+			for(var i = 1; i <=12; i++){
+				var option = document.createElement('option');
+				option.setAttribute('value',i);
+				option.innerHTML = i;
+				sel2.appendChild(option);	
+			}
+			//生成1日—31日
+			for(var i = 1; i <=31; i++){
+				var option = document.createElement('option');
+				option.setAttribute('value',i);
+				option.innerHTML = i;
+				sel3.appendChild(option);	
+			}
+		}
+		creatDate();
+		//保存某年某月的天数
+		var days;
+		//年份点击
+		sel1.onclick = function(){
+			//月份显示默认值
+			sel2.options[0].selected = true;
+			//天数显示默认值
+			sel3.options[0].selected = true;
+		}
+		//月份点击
+		sel2.onclick = function(){
+			//天数显示默认值
+			sel3.options[0].selected = true;
+			//计算天数的显示范围
+			//如果是2月
+			if(sel2.value == 2){
+			    //如果是闰年
+			    if((sel1.value % 4 === 0 && sel1.value % 100 !== 0)  || sel1.value % 400 === 0){
+			        days = 29;
+			    //如果是平年
+			    }else{
+			        days = 28;
+			    }
+			//如果是第4、6、9、11月
+			}else if(sel2.value == 4 || sel2.value == 6 ||sel2.value == 9 ||sel2.value == 11){
+			    days = 30;
+			}else{
+			    days = 31;
+			}
+			//增加或删除天数
+			//如果是28天，则删除29、30、31天(即使他们不存在也不报错)
+			if(days == 28){
+				sel3.remove(31);
+				sel3.remove(30);
+				sel3.remove(29);
+			}
+			//如果是29天
+			if(days == 29){
+				sel3.remove(31);
+				sel3.remove(30);
+				//如果第29天不存在，则添加第29天
+				if(!sel3.options[29]){
+					sel3.add(new Option('29','29'),undefined)
+				}
+			}
+			//如果是30天
+			if(days == 30){
+				sel3.remove(31);
+				//如果第29天不存在，则添加第29天
+				if(!sel3.options[29]){
+					sel3.add(new Option('29','29'),undefined)
+				}
+				//如果第30天不存在，则添加第30天
+				if(!sel3.options[30]){
+					sel3.add(new Option('30','30'),undefined)
+				}
+			}
+			//如果是31天
+			if(days == 31){
+				//如果第29天不存在，则添加第29天
+				if(!sel3.options[29]){
+					sel3.add(new Option('29','29'),undefined)
+				}
+				//如果第30天不存在，则添加第30天
+				if(!sel3.options[30]){
+					sel3.add(new Option('30','30'),undefined)
+				}
+				//如果第31天不存在，则添加第31天
+				if(!sel3.options[31]){
+					sel3.add(new Option('31','31'),undefined)
+				}
+			}
+		}
+ 
+//结果显示
+box.onclick = function(){
+	//当年、月、日都已经为设置值时
+	if(sel1.value !='year' && sel2.value != 'month' && sel3.value !='day'){
+		var day = new Date(sel1.value,sel2.value-1,sel3.value).getDay();
+		result.innerHTML = sel1.value + '年' + sel2.value + '月' +  sel3.value + '日' + '星期' + changDay(day);
+	}else{
+		result.innerHTML = '';
+	}
+}
+</script>
+</body>
+</html>

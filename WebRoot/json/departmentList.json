@@ -1,0 +1,19 @@
+
+{"total":20,"rows":[
+{"check":"no","departmentID":"1","departmentName":"研发部","departmentName2":"研发部","startTimeAM":"9:00","endTimeAM":"12:00","startTimePM":"14:00","endTimePM":"18:00","pid":"1","opr":"1"},
+  {"check":"no","departmentID":"2","departmentName":"人事部","departmentName2":"研发部","startTimeAM":"9:00","endTimeAM":"12:00","startTimePM":"14:00","endTimePM":"18:00","pid":"1"},
+  {"check":"no","departmentID":"3","departmentName":"招生部","departmentName2":"研发部","startTimeAM":"9:00","endTimeAM":"12:00","startTimePM":"14:00","endTimePM":"18:00","pid":"1"},
+  {"check":"no","departmentID":"4","departmentName":"财务部","departmentName2":"研发部",	"startTimeAM":"9:00","endTimeAM":"12:00","startTimePM":"14:00","endTimePM":"18:00","pid":"2"}
+  
+
+]}
+
+
+
+
+
+
+
+
+
+

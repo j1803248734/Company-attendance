@@ -1,0 +1,23 @@
+
+{"total":20,"rows":[
+  {"check":"no","employeeID":"1","employeeName":"one","employeeGender":"1","positionName":"职员","departmentName":"实训学院","cardNumber":"0001335551","employeeState":"1","opr":"1"},
+  {"check":"no","employeeID":"2","employeeName":"two","employeeGender":"1","positionName":"部门经理","departmentName":"实训学院","cardNumber":"2017105294","employeeState":"1"},
+  {"check":"no","employeeID":"3","employeeName":"three","employeeGender":"0","positionName":"职员","departmentName":"实训学院","cardNumber":"00024","employeeState":"1"},
+  {"check":"no","employeeID":"4","employeeName":"four","employeeGender":"1","positionName":"部门","departmentName":"软件学院","cardNumber":"00189","employeeState":"1"},
+  {"check":"no","employeeID":"5","employeeName":"five","employeeGender":"1","positionName":"职员","departmentName":"软件学院","cardNumber":"00013","employeeState":"1"},
+  {"check":"no","employeeID":"6","employeeName":"six","employeeGender":"1","positionName":"部门经理","departmentName":"软件学院","cardNumber":"00011","employeeState":"1"},
+  {"check":"no","employeeID":"7","employeeName":"serven","employeeGender":"0","positionName":"职员","departmentName":"软件学院","cardNumber":"00013","employeeState":"1"},
+  {"check":"no","employeeID":"8","employeeName":"eigth","employeeGender":"0","positionName":"部门经理","departmentName":"软件学院","cardNumber":"00011","employeeState":"1"},
+  {"check":"no","employeeID":"9","employeeName":"nine","employeeGender":"0","positionName":"部门经理","departmentName":"软件学院","cardNumber":"00011","employeeState":"0"}
+
+]}
+
+
+
+
+
+
+
+
+
+

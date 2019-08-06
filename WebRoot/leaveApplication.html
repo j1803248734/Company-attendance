@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>leaveApplication.html</title>
+
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/default/easyui.css"/>
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+	<script src="js/jquery-easyui/jquery.min.js"></script>
+	<script src="js/jquery-easyui/jquery.easyui.min.js"></script>
+	<script src="js/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript">
+		formatterDate = function(date) {
+		var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+		var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"
+		+ (date.getMonth() + 1);
+		return date.getFullYear() + '-' + month + '-' + day;
+		};
+		
+		window.onload = function () { 
+	
+		}
+		$(
+			function()
+			{
+				initattendancedept()
+			}
+		);
+		function initattendancedept()
+			{
+				$("#table").datagrid({
+			    title:"数据列表",
+			    iconCls:"icon-left02",
+			    url:'http://localhost:8080/KQSYS/NoteController/queryAllNotes',
+			    fitColumns:true,
+			    striped:true,
+			    pagination:true,
+			    pageSize:10,
+			    width:'100%',
+			    rownumbers:true,
+			    pageList:[10,20],
+			    pageNumber:1,
+			    nowrap:true,
+			    height:'auto',
+			    sortName:'noteID',
+			    checkOnSelect:false,
+			    toolbar: '#tabelBut',
+			    sortOrder:'asc',
+			    columns:[[
+			            {
+			                    checkbox:true,
+			                    field:'no',
+			                    width:100,
+			                    align:'center'
+			            },
+			            {
+			                    field:'noteID',
+			                        title:'编号',
+			                        width:50,
+			                        align:'center'
+			                },
+			                {
+		                        field:'cardNumber',
+		                        title:'卡号',
+		                        width:50,
+		                        align:'center'
+		                },
+		                {
+		                        field:'oneDName',
+		                        title:'一级部门',
+		                        width:60,
+		                        align:'center'
+		                },
+		                {
+		                        field:'twoName',
+		                        title:'二级部门',
+		                        width:60,
+		                        align:'center'
+		                },
+		                {
+		                        field:'fillInTime',
+		                        title:'填写时间',
+		                        width:60,
+		                        align:'center',
+		                        formatter:function(val)
+		                        {
+		                        	return formatDate(val);
+		                        }
+		                },
+		                {
+		                        field:'employeeName',
+		                        title:'申请人',
+		                        width:50,
+		                        align:'center'
+		                },
+		                {
+		                        field:'typeName',
+		                        title:'请假类型',
+		                        width:50,
+		                        align:'center'
+		                },
+		                {
+		                        field:'startDate',
+		                        title:'起始日期',
+		                        width:50,
+		                        align:'center',
+		                        formatter:function(val)
+		                        {
+		                        	return formatDate(val);
+		                        }
+		                },{
+		                        field:'startTime',
+		                        title:'起始时间',
+		                        width:50,
+		                        align:'center'
+		                },
+		                {
+		                        field:'endDate',
+		                        title:'结束日期',
+		                        width:50,
+		                        align:'center',
+		                        formatter:function(val)
+		                        {
+		                        	return formatDate(val);
+		                        }
+		                },
+		                {
+		                        field:'endTime',
+		                        title:'结束时间',
+		                        width:50,
+		                        align:'center'
+		                },
+		                {
+		                        field:'operatorName',
+		                        title:'代理人',
+		                        width:50,
+		                        align:'center'
+		                },
+			                {
+			                        field:'opr',
+			                        title:'操作',
+			                        width:200,
+			                        align:'center',
+			                        formatter:function (val,row) {
+			                        	a = '<a  id="query" data-id="98" class="operA01"  onclick="">查看</a> ';
+			                            e = '<a  id="edit" data-id="98" class="operA"  onclick="edit(\'' + row.noteID + '\')">编辑</a> ';
+			                            d = '<a  id="add" data-id="98" class="operA01"  onclick="delOne(' + row.noteID + ')">删除</a> ';
+			                            return a+e+d;
+			
+			                        }
+			                }   
+			        ]]
+			});
+			}
+			function formatDate(val)
+			{
+				var date = new Date(val);
+			    return date.getFullYear()+"/"+
+			    (date.getMonth()+1)+"/"+
+			    date.getDate();
+			}
+			function addBox()
+			{
+				$("#addBox").dialog({
+                	 title:"信息内容",
+                     width:500,
+                     height:300,
+                     closed: false,
+                     modal:true,
+                     shadow:true
+                });
+                
+                
+        }
+        function formatDateTime(timeStamp) {
+		    var date = new Date();  
+		    date.setTime(timeStamp);  // 精确到毫秒、如果没有到毫秒就 date.setTime(timeStamp*1000);
+		    var y = date.getFullYear();      
+		    var m = date.getMonth() + 1;      
+		    m = m < 10 ? ('0' + m) : m;      
+		    var d = date.getDate();      
+		    d = d < 10 ? ('0' + d) : d;      
+		    var h = date.getHours();    
+		    h = h < 10 ? ('0' + h) : h;    
+		    var minute = date.getMinutes();    
+		    var second = date.getSeconds();    
+		    minute = minute < 10 ? ('0' + minute) : minute;      
+		    second = second < 10 ? ('0' + second) : second;     
+		    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;   
+  		}
+
+       	 function edit( noteID )
+        {
+        		opt = "save";
+        	$("#editBox").dialog({
+                	 title:"信息内容",
+                     width:700,
+                     height:500,
+                     closed: false,
+                     modal:true,
+                     shadow:true
+                });
+		        $.ajax({
+                       url:'http://localhost:8080/KQSYS/NoteController/queryNoteByPK?noteID='+noteID,
+                       type:'post',
+                       dataType:'json',
+                       data:{ noteID : noteID },
+                       success:function (data) {
+                               if(data){	 
+                                       $.each(data,function (index) {
+                                             var  ID=data.noteID;
+                                            
+                                       		/*	 var fillInTime = formatDateTime( data.fillInTime );
+                                        		 var startDate = formatDateTime( data.startDate );
+                                        		 var endDate = formatDateTime( data.endDate);*/
+                                               if(noteID==ID){
+                                            	   		//点击一条记录，将这条记录给Form
+                                            	   		$("#editForm #startTime").combobox(
+															{
+																data:[
+																	{id : data.startTimeAM,
+																	text: '上午'},
+																	{id : data.startTimePM,
+																	text: '下午'}
+																],
+																valueField:'id',
+																textField:'text'
+														});
+														
+														$("#editForm #endTime").combobox(
+															{
+																valueField:'id',
+																textField:'text',
+																data:[
+																	{id : data.endTimeAM ,
+																	text: '上午'},
+																	{id : data.endTimePM ,
+																	text: '下午'}
+																]
+															}
+														);	
+                                                       $('#editForm').form('load',{
+                                                               noteID : noteID,
+                                                               fillInTime : formatDateTime( data.fillInTime ),
+                                                               cardNumber : data.cardNumber,
+                                                               cause : data.cause,
+                                                               employeeName : data.employeeName+'('+(data.employeeID)+')',
+                                                               noteTypeID : data.noteTypeID,
+                                                               operatorName : data.operatorName+'('+(data.operatorID)+')',
+															   directorSign:data.directorSign,
+															   presidentSign:data.presidentSign,
+															   administrationSign:data.administrationSign,
+															   startDate: formatDateTime( data.startDate ),
+															   endDate:formatDateTime( data.endDate),
+															   startTime:data.startTime,
+															   endTime:data.endTime,
+															   departmentID:data.departmentID
+																
+                                                       });
+                                                       
+                                                     
+                                               }
+                                               
+
+                                       })
+                               }
+
+                       },
+                       error:function () {
+                               $.messager.show({
+                                       title:'提示',
+                                       msg:'更新失败'
+
+                               })
+
+                       }
+               })
+		       
+        }
+        function delOne(noteID)
+		{
+			$.messager.confirm('提示信息','是否删除所选择记录',
+			//$('tableTwo').datagrid("deleteRow", index);
+			 	function (flag) {
+			 		if( flag == true)//点击确定  则进行删除
+			 		{
+			 			$.ajax(
+			 				{
+			 					type:'post',
+                                url:'http://localhost:8080/KQSYS/NoteController/deleteNote?noteID='+noteID,
+                                dataType:"json",
+                                beforesend:function () {
+                                $("#table").datagrid('loading');
+								},
+								success:function(data)
+								{
+									$("#table").datagrid("loaded");
+                                    $("#table").datagrid("load");
+                                    if( data == null )
+                                    {
+                                    	$.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除失败"
+	                                    	}
+	                                    );
+                                    }else{
+	                                    $.messager.show(
+	                                    	{
+	                                         title:'提示信息',
+	                                         msg:"删除成功"
+	                                    	}
+	                                    );
+                                    }
+								}
+			 				}
+			 			);
+			 		}
+			 	}
+			 );
+		}
+		function find()
+		{
+		var noteTypeID = $('#noteTypeID').val();
+		var departmentID = $('#departmentID').val();
+		var employeeName = $('#employeeName').val();
+		var attendanceDate = $('#attendanceDate').val();
+		
+		$('#table').datagrid('load', {    
+		    noteTypeID: noteTypeID,    
+		    departmentID: departmentID,
+		    employeeName:employeeName,
+		    endDate:attendanceDate,
+		    startDate:attendanceDate
+		}); 
+	}
+		$(
+	function () {
+		$("#departmentID").combotree(
+		{
+        	url:'http://localhost:8080/KQSYS/DepartmentController/queryAllDepartmentsForTree',
+        	height:26,
+        	width:'150px',
+        	onSelect:function () {
+           		  	
+        	}
+		});
+		
+		
+	});
+	
+	function tableListshow( flag ){
+			
+			$("#divList").dialog({
+	                	 title:"信息内容",
+	                     width:700,
+	                     height:500,
+	                     closed: false,
+	                     modal:true,
+	                     shadow:true
+	                });
+			
+				$("#tableList").datagrid({
+			    title:"数据列表",
+			    iconCls:"icon-left02",
+			    url:'http://localhost:8080/KQSYS/EmployeeController/findByName',
+			    fitColumns:true,
+			    striped:true,
+			    pagination:false,
+			    pageSize:10,
+			    width:'100%',
+			    rownumbers:true,
+			    pageList:[10,20],
+			    pageNumber:1,
+			    nowrap:true,
+			    height:'auto',
+			    sortName:'employeeID',
+			    checkOnSelect:false,
+			   
+			    sortOrder:'asc',
+			    columns:[[
+			            {
+			                    checkbox:true,
+			                    field:'no',
+			                    width:100,
+			                    align:'center'
+			            },
+			            {
+			                    field:'employeeID',
+			                        title:'员工编号',
+			                        width:50,
+			                        align:'center'
+			                },{
+		                        field:'oneDName',
+		                        title:'部门',
+		                        width:60,
+		                        align:'center'
+		                },
+		                {
+		                        field:'twoName',
+		                        title:'部门',
+		                        width:60,
+		                        align:'center'
+		                },
+		                {
+		                        field:'cardNumber',
+		                        title:'卡号',
+		                        width:60,
+		                        align:'center'
+		                },
+		                {
+		                        field:'employeeName',
+		                        title:'员工名称',
+		                        width:60,
+		                        align:'center',
+		                        
+		                },
+			                {
+			                        field:'opr',
+			                        title:'操作',
+			                        width:200,
+			                        align:'center',
+			                        formatter:function (val, row, index) {
+			                        
+			                            e = "<a  id='add' data-id='98' class='operA'  onclick='selectEmp( " + flag + "," + row.employeeID + " , \""+ row.employeeName+ "\" , " + row.twoDID + ", \""+ row.startTimeAM+ "\" , \"" + row.startTimePM +"\", \""+ row.endTimeAM+ "\" ,\"" + row.endTimePM +"\")'>选择</a>";
+			                        
+			                            return e;
+			
+			                        }
+			                }   
+			        ]]
+			});
+			}
+			function query_onclick()
+			{
+				var employeeName = $('#divList #employeeName').val();
+				
+				$('#tableList').datagrid('load', {    
+			   
+			   
+			   	 	employeeName:employeeName,
+			  
+				}); 
+			}	
+		function selectEmp( flag,employeeId, employeeName , twoDID, startTimeAM , startTimePM , endTimeAM , endTimePM ) {
+				
+			if(flag == 1 )
+			{
+				var str = employeeName + "(" + employeeId + ")";
+				$("#editForm #employeeName").val(str);
+				$("#editForm #departmentID").val(twoDID);
+				$("#editForm #startTime").combobox(
+				{
+					data:[
+						{id : startTimeAM,
+						text: '上午'},
+						{id : startTimePM,
+						text: '下午'}
+						],
+						valueField:'id',
+						textField:'text'
+					});
+														
+					$("#editForm #endTime").combobox(
+					{
+						valueField:'id',
+						textField:'text',
+						data:[
+						{id : endTimeAM ,
+						text: '上午'},
+						{id : endTimePM ,
+						text: '下午'}
+					]
+					}
+					);	
+			}else
+			{
+				var str = employeeName + "(" + employeeId + ")";
+				$("#editForm #operatorName").val(str);
+			}
+			$("#divList").dialog({
+				closed : true
+			});
+		}
+		function addBox( flag ){
+			opt = "add";
+			
+			$("#editBox").dialog({
+	                	 title:"信息内容",
+	                     width:700,
+	                     height:500,
+	                     closed: false,
+	                     modal:true,
+	                     shadow:true
+	                });
+	        $("#editForm").form("reset");	
+	       
+	  }	
+	  function save() {
+		if( opt == "add" )
+		{
+			addNote();
+		}else if( opt == "save" )
+		{
+				updateNote();
+		}
+	}
+	
+	function addNote()
+	{
+		$('#editForm').form('submit', {
+			url : "http://localhost:8080/KQSYS/NoteController/addNote",
+			onSubmit : function(param) {
+				param.departmentID = $("#editForm #departmentID").val();
+			
+				var isValid = $(this).form('validate');
+				alert(isValid);
+				if (!isValid){
+					$.messager.progress('close');
+				}
+				return isValid;
+			},
+			success:function(data)
+			{
+				eval("var obj = " + data);
+				if( obj.status == true )
+				{
+					$.messager.alert('提示','保存成功！','info');
+				}else
+				{
+					$.messager.alert('提示','保存失败！','info');
+				}
+				
+				//关闭
+				$("#editBox").dialog({
+					closed : true
+				});
+				
+				//刷新数据
+				$('#table').datagrid('reload');    
+			}
+		});	
+	}
+	
+	function updateNote()
+	{
+		$('#editForm').form('submit', {
+			url : "http://localhost:8080/KQSYS/NoteController/updateNote",
+			onSubmit : function(param) {
+				param.departmentID = $("#editForm #departmentID").val();
+			
+				var isValid = $(this).form('validate');
+				alert(isValid);
+				if (!isValid){
+					$.messager.progress('close');
+				}
+				return isValid;
+			},
+			success:function(data)
+			{
+				eval("var obj = " + data);
+				if( obj.status == true )
+				{
+					$.messager.alert('提示','保存成功！','info');
+				}else
+				{
+					$.messager.alert('提示','保存失败！','info');
+				}
+				
+				//关闭
+				$("#editBox").dialog({
+					closed : true
+				});
+				
+				//刷新数据
+				$('#table').datagrid('reload');    
+			}
+		});	
+	}
+</script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true" id="useBox">
+    <div data-options="region:'center',split:true">
+        <!--表格查询-->
+       <div class="tableFind" style=" margin-left: 50px;">
+			<p>
+	            	 <label>请假类型：</label>
+	            	 <input  class="easyui-combobox" name="noteTypeID" id="noteTypeID" value="全部" style="width:120px; height: 27px;"
+		    			data-options="valueField:'typeID',textField:'typeName',url:'http://localhost:8080/KQSYS/AttendanceTypeController/queryAllLeaveTypes'"  />  
+						&nbsp;&nbsp;
+						
+						 <label>选择部门:</label>
+					  <input type="text" id="departmentID"  name="departmentID"/>
+           
+				</p>
+				<p >
+				
+					<label>员工姓名:</label>
+					<input type="text" id="employeeName" name="employeeName" style="width:150px">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					开始截止日期中包含:
+					<input type="text" id="attendanceDate" name="attendanceDate" style="width:150px">
+					
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					
+					<a href="#" class="easyui-linkbutton" 
+	                    onclick="find()">&nbsp;检索&nbsp;</a>
+                 
+			</p>
+			
+        </div>
+       
+        <!--表格列表-->
+        <div class="tableCon">
+            <table id="table" class="tableStyle"></table>
+            <div id="tabelBut">
+                <div>
+                    <a  class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="addBox()">新增</a>
+                   
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divList">
+		 <div data-options="region:'center',split:true">
+        <!--表格查询-->
+       		
+       			 <form id="queryForm" method="post">
+       				<div class="tableFind" style=" text-align: center;">
+       				<label>姓名：</label>
+       					<input type="text" id="employeeName" class="easyui-validatebox" name="employeeName" data-options="">
+       					 <a onclick="query_onclick()" class="easyui-linkbutton"   >搜索</a>
+       					
+       				</div>
+       			</form>
+       		
+       		</div>
+       		 <div class="tableCon">
+           		<table id="tableList" class="tableStyle"></table>
+            </div>
+            
+  </div>
+<div id="editBox">
+ <form id="editForm" method="post">
+            <div title="基本信息">
+            <input id="departmentID" name="departmentID" type="hidden" value="" />
+            <input id="noteID" name="noteID" type="hidden" value="" />
+                <table class="TailTable">
+                	<tr>
+                        <td class="TailLabel">申请人：</td>
+                        <td>
+                        	<input type="text" class="easyui-validatebox TailInput" name="employeeName"  id="employeeName" data-options="min:0,precision:2" readonly="readonly" data-options="multiline:true,required:true">
+                        	<a onclick="tableListshow(1)" class="easyui-linkbutton" onclick="" style="margin-left: 20px"> 检索 </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">代理人：</td>
+                        <td>
+	                        <input type="text" class="easyui-validatebox TailInput" name="operatorName" id="operatorName" data-options="min:0,precision:2" readonly="readonly" data-options="multiline:true,required:true">
+	                        <a onclick="tableListshow(2)" class="easyui-linkbutton" onclick="" style="margin-left: 20px"> 检索 </a>
+                        </td>
+                        
+
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">请假类型:</td>
+                        <td> <input  class="easyui-combobox" name="noteTypeID" id="noteTypeID" value="全部" style="width:120px; height: 27px;"data-options="valueField:'typeID',textField:'typeName',url:'http://localhost:8080/KQSYS/AttendanceTypeController/queryAllLeaveTypes'"  />  
+        					<span class="formSpan">*</span>
+        				</td>
+                        
+
+                    </tr>
+                    <tr>
+                     <td class="TailLabel">填表日期：</td>
+                        <td>
+			        		<input type="text" id="nowTime" value="new Date()" class="easyui-datebox" id="fillInTime" name="fillInTime" style="width: 120px;height: 26px" data-options="multiline:true,required:true">
+            
+			        		<span class="formSpan">*</span>
+                        </td>
+                        </tr>
+                     <tr>
+                        <td class="TailLabel">请假事由：</td>
+                        <td>
+							<input class="easyui-textbox" name="cause" style="width:300px;height:60px" data-options="multiline:true,required:true" >                        	
+							<span class="formSpan">*</span>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">请假起始时间：</td>
+                        <td>
+		                    <input type="text" id="startDate" value="new Date()" class="easyui-datebox" id="startDate" name="startDate" style="width: 120px;height: 26px" data-options="multiline:true,required:true">
+			            	&nbsp;&nbsp;
+			            	<input id="startTime" class="easyui-combobox"   value="请选择"
+						name="startTime" style="width:70px;height:30px">   	
+			            	<span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">请假截至时间：</td>
+                        <td>
+                        	<input type="text" id="endDate" value="new Date()" class="easyui-datebox" id="endDate" name="endDate" style="width: 120px;height: 26px" data-options="multiline:true,required:true"> 
+			            	&nbsp;&nbsp;
+			            	
+			            	<input id="endTime" class="easyui-combobox"  value="请选择"
+						name="endTime" style="width:70px;height:30px">
+        					<span class="formSpan">*</span>
+        				</td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">主管经理签字：</td>
+                        <td>
+							                       	
+							<input class="easyui-textbox" name="directorSign" id="directorSign" style="width:300px;height:60px" data-options="multiline:true,required:true" > 
+							<span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">行政部经理签字：</td>
+                        <td>
+                        	<input class="easyui-textbox" name="administrationSign" id="administrationSign" style="width:300px;height:60px" data-options="multiline:true,required:true" > 
+                        	
+							<span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TailLabel">总裁审批：</td>
+                        <td>
+                            <input class="easyui-textbox" name="presidentSign" id="presidentSign" style="width:300px;height:60px" data-options="multiline:true,required:true" > 
+                        
+							<span class="formSpan">*</span>
+                        </td>
+                    </tr>
+                </table>
+                <div class="forSubmint"> <a onclick="save()" class="easyui-linkbutton"  iconCls="icon-save" >保存</a>
+                <a class="easyui-linkbutton"  iconCls="icon-redo" onclick="Reset()">重置</a> </div>
+            </div>
+           </form>
+        </div>
+	
+	
+</body>
+</html>

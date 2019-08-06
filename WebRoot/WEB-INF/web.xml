@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <servlet>
+    <servlet-name>PositionController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.PositionController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>EmployeeController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.EmployeeController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DepartmentController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.DepartmentController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AttendanceTypeController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.AttendanceTypeController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AdminController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.AdminController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AttendanceRecordController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.AttendanceRecordController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AttendanceDeptController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.AttendanceDeptController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AttendanceDayController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.AttendanceDayController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AttendanceSumController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.AttendanceSumController</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>IndexController</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>com.jiang.controller.IndexController</servlet-class>
+  </servlet>
+
+
+
+
+
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>PositionController</servlet-name>
+    <url-pattern>/servlet/PositionController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EmployeeController</servlet-name>
+    <url-pattern>/servlet/EmployeeController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DepartmentController</servlet-name>
+    <url-pattern>/servlet/DepartmentController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AttendanceTypeController</servlet-name>
+    <url-pattern>/servlet/AttendanceTypeController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AdminController</servlet-name>
+    <url-pattern>/servlet/AdminController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AttendanceRecordController</servlet-name>
+    <url-pattern>/servlet/AttendanceRecordController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AttendanceDeptController</servlet-name>
+    <url-pattern>/servlet/AttendanceDeptController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AttendanceDayController</servlet-name>
+    <url-pattern>/servlet/AttendanceDayController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AttendanceSumController</servlet-name>
+    <url-pattern>/servlet/AttendanceSumController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>IndexController</servlet-name>
+    <url-pattern>/servlet/IndexController</url-pattern>
+  </servlet-mapping>
+
+</web-app>
